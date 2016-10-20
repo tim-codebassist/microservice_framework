@@ -51,7 +51,7 @@ public final class ServiceComponents {
      * @throws Exception if non pass through method or an error occurs
      */
     public static void verifyPassThroughCommandHandlerMethod(final Class<?> handlerClass, final String... methodNames) throws Exception {
-        List<Method> methods = new ArrayList<>();
+        final List<Method> methods = new ArrayList<>();
 
         for (String methodName : methodNames) {
             methods.add(handlerClass.getMethod(methodName, JsonEnvelope.class));
@@ -119,7 +119,7 @@ public final class ServiceComponents {
      * @throws Exception if non pass through method or an error occurs
      */
     public static void verifyPassThroughQueryHandlerMethod(final Class<?> handlerClass, final String... methodNames) throws Exception {
-        List<Method> methods = new ArrayList<>();
+        final List<Method> methods = new ArrayList<>();
 
         for (String methodName : methodNames) {
             methods.add(handlerClass.getMethod(methodName, JsonEnvelope.class));
@@ -166,43 +166,43 @@ public final class ServiceComponents {
         }
     }
 
-    private static void assertIsServiceComponent(final Class<?> handlerClass) {
+    public static void assertIsServiceComponent(final Class<?> handlerClass) {
         if (isNotServiceComponent(handlerClass)) {
             throw new AssertionError(format("No @ServiceComponent annotation present on Class %s", handlerClass.getSimpleName()));
         }
     }
 
-    private static void assertMethodHasHandlesAnnotation(final Method method) {
+    public static void assertMethodHasHandlesAnnotation(final Method method) {
         if (hasNoHandlesAnnotation(method)) {
             throw new AssertionError(format("No @Handles annotation present on Method %s", method.getName()));
         }
     }
 
-    private static void assertHandlerHasMethods(final Class<?> handlerClass, final List<Method> methods) {
+    public static void assertHandlerHasMethods(final Class<?> handlerClass, final List<Method> methods) {
         if (methods.isEmpty()) {
             throw new AssertionError(format("No @Handles annotation present, or no Handler methods for class %s", handlerClass.getSimpleName()));
         }
     }
 
-    private static boolean isNotServiceComponent(final Class<?> handlerClass) {
+    public static boolean isNotServiceComponent(final Class<?> handlerClass) {
         return !Stream.of(handlerClass.getAnnotations())
                 .filter(annotation -> annotation.annotationType().equals(ServiceComponent.class))
                 .findFirst()
                 .isPresent();
     }
 
-    private static boolean hasNoHandlesAnnotation(final Method handlerMethod) {
+    public static boolean hasNoHandlesAnnotation(final Method handlerMethod) {
         return !hasHandlesAnnotation(handlerMethod);
     }
 
-    private static boolean hasHandlesAnnotation(final Method handlerMethod) {
+    public static boolean hasHandlesAnnotation(final Method handlerMethod) {
         return Stream.of(handlerMethod.getDeclaredAnnotations())
                 .filter(annotation -> annotation.annotationType().equals(Handles.class))
                 .findFirst()
                 .isPresent();
     }
 
-    private static Field findField(final Class<?> handlerClass, final Class<?> fieldClass) {
+    public static Field findField(final Class<?> handlerClass, final Class<?> fieldClass) {
         return Stream.of(handlerClass.getDeclaredFields())
                 .filter(field -> field.getType().equals(fieldClass))
                 .findFirst()
