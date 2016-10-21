@@ -10,13 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 public class ServiceClassPassThroughMatcher extends TypeSafeDiagnosingMatcher<Class<?>> {
 
-    private final Map<String, MethodHandlesMatcher> methodsToMatch = new HashMap<>();
+    private final Map<String, Matcher> methodsToMatch = new HashMap<>();
 
-    public static ServiceClassPassThroughMatcher isCommandPassThrough() {
+    public static ServiceClassPassThroughMatcher isHandlerClass() {
         return new ServiceClassPassThroughMatcher();
     }
 
@@ -35,16 +36,17 @@ public class ServiceClassPassThroughMatcher extends TypeSafeDiagnosingMatcher<Cl
             return false;
         }
 
-        for (Map.Entry<String, MethodHandlesMatcher> methodEntry : methodsToMatch.entrySet()) {
+        for (Map.Entry<String, Matcher> methodEntry : methodsToMatch.entrySet()) {
             final String methodName = methodEntry.getKey();
-            final MethodHandlesMatcher handlesMatcher = methodEntry.getValue();
+            final Matcher handlesMatcher = methodEntry.getValue();
 
             try {
                 final Method method = handlerClass.getMethod(methodName, JsonEnvelope.class);
 
-                if (handlesMatcher.matchesSafely(method, description)) {
+                if (handlesMatcher.matches(method)) {
                     passThroughMethod().matchesSafely(method, description);
                 } else {
+                    handlesMatcher.describeMismatch(method, description);
                     return false;
                 }
 
@@ -66,12 +68,12 @@ public class ServiceClassPassThroughMatcher extends TypeSafeDiagnosingMatcher<Cl
 
     }
 
-    public ServiceClassPassThroughMatcher hasMethod(final String methodName) {
+    public ServiceClassPassThroughMatcher withMethod(final String methodName) {
         this.methodsToMatch.put(methodName, null);
         return this;
     }
 
-    public ServiceClassPassThroughMatcher hasMethod(final String methodName, final MethodHandlesMatcher methodHandlesMatcher) {
+    public ServiceClassPassThroughMatcher withMethod(final String methodName, final Matcher methodHandlesMatcher) {
         this.methodsToMatch.put(methodName, methodHandlesMatcher);
         return this;
     }

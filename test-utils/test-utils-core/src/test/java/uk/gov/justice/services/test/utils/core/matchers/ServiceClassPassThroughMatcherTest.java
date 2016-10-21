@@ -18,22 +18,22 @@ public class ServiceClassPassThroughMatcherTest {
     @Test
     public void shouldMatchPassThroughMethodOfServiceClass() throws Exception {
         assertThat(ValidCommandApi.class, ServiceClassPassThroughMatcher
-                .isCommandPassThrough()
-                .hasMethod("testA", thatHandles("testA")));
+                .isHandlerClass()
+                .withMethod("testA", thatHandles("testA")));
     }
 
     @Test(expected = AssertionError.class)
     public void shouldNotMatchWhenNoHandlerMethod() throws Exception {
         assertThat(InValidNoHandlerMethod.class, ServiceClassPassThroughMatcher
-                .isCommandPassThrough()
-                .hasMethod("testA", thatHandles("testA")));
+                .isHandlerClass()
+                .withMethod("testA", thatHandles("testA")));
     }
 
     @Test(expected = AssertionError.class)
     public void shouldNotMatchWhenNoHandlesAnnotation() throws Exception {
         assertThat(InValidNoHandlesAnnotation.class, ServiceClassPassThroughMatcher
-                .isCommandPassThrough()
-                .hasMethod("testA", thatHandles("testA")));
+                .isHandlerClass()
+                .withMethod("testA", thatHandles("testA")));
     }
 
     @ServiceComponent(COMMAND_API)
