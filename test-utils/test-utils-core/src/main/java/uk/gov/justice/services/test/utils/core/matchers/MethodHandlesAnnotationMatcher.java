@@ -7,21 +7,21 @@ import java.lang.reflect.Method;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-public class MethodHandlesMatcher extends TypeSafeDiagnosingMatcher<Method> {
+public class MethodHandlesAnnotationMatcher extends TypeSafeDiagnosingMatcher<Method> {
 
-    private final String handles;
+    private final String action;
 
-    public MethodHandlesMatcher(final String handles) {
-        this.handles = handles;
+    public MethodHandlesAnnotationMatcher(final String action) {
+        this.action = action;
     }
 
-    public static MethodHandlesMatcher methodThatHandles(final String handles) {
-        return new MethodHandlesMatcher(handles);
+    public static MethodHandlesAnnotationMatcher methodThatHandles(final String action) {
+        return new MethodHandlesAnnotationMatcher(action);
     }
 
     @Override
     public void describeTo(final Description description) {
-        description.appendText("Does method handle: ").appendValue(handles);
+        description.appendText("Does method handle: ").appendValue(action);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class MethodHandlesMatcher extends TypeSafeDiagnosingMatcher<Method> {
 
         if (method.isAnnotationPresent(Handles.class)) {
             final Handles annotation = method.getAnnotation(Handles.class);
-            if (annotation.value().equals(handles)) {
+            if (annotation.value().equals(action)) {
                 return true;
             }
         }
@@ -37,7 +37,7 @@ public class MethodHandlesMatcher extends TypeSafeDiagnosingMatcher<Method> {
         description.appendText("Method: ")
                 .appendValue(method.getName())
                 .appendText(" does not handle: ")
-                .appendValue(handles);
+                .appendValue(action);
 
         return false;
     }

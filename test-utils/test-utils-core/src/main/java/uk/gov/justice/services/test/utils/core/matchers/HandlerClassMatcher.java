@@ -6,15 +6,15 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-public class ServiceClassPassThroughMatcher extends TypeSafeDiagnosingMatcher<Class<?>> {
+public class HandlerClassMatcher extends TypeSafeDiagnosingMatcher<Class<?>> {
 
     private Matcher matcher;
 
-    public static ServiceClassPassThroughMatcher isHandlerClass() {
-        return new ServiceClassPassThroughMatcher();
+    public static HandlerClassMatcher isHandlerClass() {
+        return new HandlerClassMatcher();
     }
 
-    public ServiceClassPassThroughMatcher with(final Matcher matcher) {
+    public HandlerClassMatcher with(final Matcher matcher) {
         this.matcher = matcher;
         return this;
     }
