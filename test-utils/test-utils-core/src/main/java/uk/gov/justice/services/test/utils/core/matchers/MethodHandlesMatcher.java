@@ -15,7 +15,7 @@ public class MethodHandlesMatcher extends TypeSafeDiagnosingMatcher<Method> {
         this.handles = handles;
     }
 
-    public static MethodHandlesMatcher thatHandles(final String handles) {
+    public static MethodHandlesMatcher methodThatHandles(final String handles) {
         return new MethodHandlesMatcher(handles);
     }
 

@@ -2,7 +2,8 @@ package uk.gov.justice.services.test.utils.core.matchers;
 
 import static org.junit.Assert.assertThat;
 import static uk.gov.justice.services.core.annotation.Component.COMMAND_API;
-import static uk.gov.justice.services.test.utils.core.matchers.MethodHandlesMatcher.thatHandles;
+import static uk.gov.justice.services.test.utils.core.matchers.CommandPassThroughMethodMatcher.passThroughMethod;
+import static uk.gov.justice.services.test.utils.core.matchers.ServiceClassPassThroughMatcher.isHandlerClass;
 
 import uk.gov.justice.services.core.annotation.Handles;
 import uk.gov.justice.services.core.annotation.ServiceComponent;
@@ -17,23 +18,18 @@ public class ServiceClassPassThroughMatcherTest {
 
     @Test
     public void shouldMatchPassThroughMethodOfServiceClass() throws Exception {
-        assertThat(ValidCommandApi.class, ServiceClassPassThroughMatcher
-                .isHandlerClass()
-                .withMethod("testA", thatHandles("testA")));
+        assertThat(ValidCommandApi.class, isHandlerClass().with(passThroughMethod("testA").thatHandles("testA")));
     }
 
     @Test(expected = AssertionError.class)
     public void shouldNotMatchWhenNoHandlerMethod() throws Exception {
-        assertThat(InValidNoHandlerMethod.class, ServiceClassPassThroughMatcher
-                .isHandlerClass()
-                .withMethod("testA", thatHandles("testA")));
+        assertThat(InValidNoHandlerMethod.class, isHandlerClass().with(passThroughMethod("testA").thatHandles("testA")));
     }
 
     @Test(expected = AssertionError.class)
     public void shouldNotMatchWhenNoHandlesAnnotation() throws Exception {
-        assertThat(InValidNoHandlesAnnotation.class, ServiceClassPassThroughMatcher
-                .isHandlerClass()
-                .withMethod("testA", thatHandles("testA")));
+        assertThat(InValidNoHandlesAnnotation.class, isHandlerClass()
+                .with(passThroughMethod("testA").thatHandles("testA")));
     }
 
     @ServiceComponent(COMMAND_API)
