@@ -8,13 +8,21 @@ on [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to
 ## [0.32.0] - 2016-10-24
 
 ### Added
-- JsonEnvelope.asJsonObject() for simple conversion of the entire envelope to a JsonObject
+- JsonEnvelope.asJsonObject() for simple conversion of the entire envelope to a JsonObject.
 - EventStreamMatcher to match stream of JsonEnvelopes appended
 - RestPoller. A polling REST client utility for integration tests
 - Mechanism for taking snapshots of aggregates, disabled by default. To enable, add a dependency on
 the `aggregate-snapshot-service` module. Requires the `aggregate-snapshot-repository-liquibase`
 schema to be applied to the event store.
 - JSON schema matching support in the JsonEnvelopeMatcher
+- Added new module 'rest-core'
+- ParameterType and ActionType for HTTP raml conversion
+- Added 'rest-client-core' as a standard dependency for event-processor'
+- Added 'rest-core' as a standard dependency for 'generators'
+- Added 'rest-core' as a standard dependency for 'rest-adapter-core'
+- Added 'rest-core' as a standard dependency for 'rest-client-generator'
+- Added 'rest-core' as a standard dependency for 'rest-client-core'
+- Added 'hamcrest-date' as a standard dependency for 'test-utils-core'
 
 ### Changed
 - JsonEnvelopeMetadataMatcher to allow matching with JSON paths
@@ -23,6 +31,10 @@ schema to be applied to the event store.
 ### Fixed
 - RestProcessor now allows metadata from payload to be merged with headers instead of being
 overwritten
+
+### Removed
+- 'raml-parser' as a dependency for 'rest-adapter-core'
+- 'rest-adapter-core' as a dependency for 'rest-client-core'  
 
 ## [0.31.0] - 2016-10-24
 
